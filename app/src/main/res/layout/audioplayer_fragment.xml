@@ -176,6 +176,19 @@
                     style="?android:attr/progressBarStyle" />
 
                 <ImageButton
+                    android:id="@+id/butBookmark"
+                    android:layout_width="@dimen/audioplayer_playercontrols_length"
+                    android:layout_height="@dimen/audioplayer_playercontrols_length"
+                    android:layout_marginEnd="62dp"
+                    android:layout_marginRight="62dp"
+                    android:layout_toStartOf="@id/butRev"
+                    android:layout_toLeftOf="@id/butRev"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Add Bookmark"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ic_star" />
+
+                <ImageButton
                     android:id="@+id/butRev"
                     android:layout_width="@dimen/audioplayer_playercontrols_length"
                     android:layout_height="@dimen/audioplayer_playercontrols_length"

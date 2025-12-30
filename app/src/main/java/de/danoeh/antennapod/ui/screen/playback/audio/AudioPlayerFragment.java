@@ -91,6 +91,8 @@ public class AudioPlayerFragment extends Fragment implements
     private ImageButton butFF;
     private TextView txtvFF;
     private ImageButton butSkip;
+
+    private ImageButton butBookmark;
     private MaterialToolbar toolbar;
     private ProgressBar progressIndicator;
     private CardView cardViewSeek;
@@ -132,6 +134,7 @@ public class AudioPlayerFragment extends Fragment implements
         butFF = root.findViewById(R.id.butFF);
         txtvFF = root.findViewById(R.id.txtvFF);
         butSkip = root.findViewById(R.id.butSkip);
+        butBookmark = root.findViewById(R.id.butBookmark);
         progressIndicator = root.findViewById(R.id.progLoading);
         cardViewSeek = root.findViewById(R.id.cardViewSeek);
         txtvSeek = root.findViewById(R.id.txtvSeek);
@@ -210,6 +213,13 @@ public class AudioPlayerFragment extends Fragment implements
         });
         butSkip.setOnClickListener(v -> getActivity().sendBroadcast(
                 MediaButtonStarter.createIntent(getContext(), KeyEvent.KEYCODE_MEDIA_NEXT)));
+
+        butBookmark.setOnClickListener(v -> {
+            if (controller != null) {
+                // TODO: Implement bookmark adding logic here
+                android.widget.Toast.makeText(getContext(), "Add bookmark clicked", android.widget.Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
