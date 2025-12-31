@@ -23,6 +23,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
+import de.danoeh.antennapod.core.bookmark.BookmarkManager;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
@@ -216,8 +217,20 @@ public class AudioPlayerFragment extends Fragment implements
 
         butBookmark.setOnClickListener(v -> {
             if (controller != null) {
-                // TODO: Implement bookmark adding logic here
-                android.widget.Toast.makeText(getContext(), "Add bookmark clicked", android.widget.Toast.LENGTH_SHORT).show();
+                    // 1. Get current item and position
+
+                    Playable media = controller.getMedia();
+                    final @Nullable FeedItem feedItem = (media instanceof FeedMedia) ? ((FeedMedia) media).getItem() : null;
+                    int currentPosition = controller.getPosition();
+
+                    if (feedItem != null) {
+                        // 2. Call the Manager
+                        BookmarkManager.getInstance().addBookmark(feedItem.getId(), currentPosition);
+
+                        android.widget.Toast.makeText(getContext(),
+                                "Bookmark added at " + Converter.getDurationStringLong(currentPosition),
+                                android.widget.Toast.LENGTH_SHORT).show();
+                    }
             }
         });
     }
