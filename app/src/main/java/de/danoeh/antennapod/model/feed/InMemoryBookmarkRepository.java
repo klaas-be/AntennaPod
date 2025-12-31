@@ -23,7 +23,7 @@ public class InMemoryBookmarkRepository implements BookmarkRepository {
     public List<Bookmark> getBookmarksForEpisode(long feedItemId) {
         // Filter the list for the specific episode
         return bookmarks.stream()
-                .filter(b -> b.getId() == feedItemId)
+                .filter(b -> b.getFeedItem() == feedItemId)
                 .collect(Collectors.toList());
     }
 

@@ -93,4 +93,11 @@
         custom:showAsAction="always"
         android:title="@string/share_label">
     </item>
+
+    <item
+        android:id="@+id/open_bookmarks_item"
+        android:icon="@drawable/ic_tag"
+        custom:showAsAction="always"
+        android:title="Bookmarks">
+    </item>
 </menu>

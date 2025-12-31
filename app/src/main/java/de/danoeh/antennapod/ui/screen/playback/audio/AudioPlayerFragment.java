@@ -22,8 +22,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.danoeh.antennapod.core.bookmark.BookmarkManager;
+import de.danoeh.antennapod.model.feed.Bookmark;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
@@ -533,6 +535,11 @@ public class AudioPlayerFragment extends Fragment implements
                 openFeed(feedItem.getFeed());
             }
             return true;
+        }  else if (itemId == R.id.open_bookmarks_item) {
+            if (feedItem != null) {
+                showBookmarksDialog(feedItem);
+            }
+            return true;
         }
         return false;
     }
@@ -601,4 +608,28 @@ public class AudioPlayerFragment extends Fragment implements
     public void scrollToPage(int page) {
         scrollToPage(page, false);
     }
+
+    private void showBookmarksDialog(FeedItem feedItem) {
+        List<Bookmark> bookmarks = BookmarkManager.getInstance().getBookmarks(feedItem.getId());
+        if (bookmarks.isEmpty()) {
+            android.widget.Toast.makeText(getContext(), "No bookmarks added", android.widget.Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String[] items = new String[bookmarks.size()];
+        for (int i = 0; i < bookmarks.size(); i++) {
+            items[i] = Converter.getDurationStringLong((int) bookmarks.get(i).getPosition()) + " - " + bookmarks.get(i).getTitle();
+        }
+
+        new MaterialAlertDialogBuilder(getContext())
+                .setTitle("Bookmarks")
+                .setItems(items, (dialog, which) -> {
+                    if (controller != null) {
+                        controller.seekTo((int) bookmarks.get(which).getPosition());
+                    }
+                })
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
+    }
+
 }
