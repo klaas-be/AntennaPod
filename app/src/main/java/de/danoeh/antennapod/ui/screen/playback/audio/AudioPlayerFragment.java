@@ -621,15 +621,28 @@ public class AudioPlayerFragment extends Fragment implements
             items[i] = Converter.getDurationStringLong((int) bookmarks.get(i).getPosition()) + " - " + bookmarks.get(i).getTitle();
         }
 
-        new MaterialAlertDialogBuilder(getContext())
+        var dialog = new MaterialAlertDialogBuilder(getContext())
                 .setTitle("Bookmarks")
-                .setItems(items, (dialog, which) -> {
+                .setItems(items, (d, which) -> {
                     if (controller != null) {
                         controller.seekTo((int) bookmarks.get(which).getPosition());
                     }
                 })
                 .setPositiveButton(android.R.string.ok, null)
                 .show();
+
+
+        dialog.getListView().setOnItemLongClickListener((parent, view, position, id) -> {
+            new MaterialAlertDialogBuilder(getContext())
+                    .setItems(new CharSequence[]{getString(R.string.delete_label)}, (d, which) -> {
+                        Bookmark bookmark = bookmarks.get(position);
+                        BookmarkManager.getInstance().deleteBookmark(bookmark);
+                        dialog.dismiss();
+                        showBookmarksDialog(feedItem);
+                    })
+                    .show();
+            return true;
+        });
     }
 
 }

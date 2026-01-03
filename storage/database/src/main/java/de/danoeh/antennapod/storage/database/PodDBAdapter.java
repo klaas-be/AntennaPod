@@ -224,7 +224,7 @@ public class PodDBAdapter {
 
     public static final String CREATE_TABLE_BOOKMARKS = "CREATE TABLE "
             + TABLE_NAME_BOOKMARKS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
-            + " TEXT," + KEY_POSITION + " INTEGER," + KEY_FEEDITEM + " INTEGER, "+ KEY_FEED+")";
+            + " TEXT," + KEY_POSITION + " INTEGER," + KEY_FEEDITEM + " INTEGER, "+ KEY_FEED+" INTEGER)";
 
     // SQL Statements for creating indexes
     static final String CREATE_INDEX_FEEDITEMS_FEED = "CREATE INDEX "
@@ -1534,6 +1534,16 @@ public class PodDBAdapter {
             cursor.close();
     }
         return bookmarks;
+    }
+
+    public void deleteBookmark(long feedId, long feedItemId, long position) {
+
+        //TODO implement bookmark deletion
+            if (db != null && db.isOpen()) {
+                db.delete(PodDBAdapter.TABLE_NAME_BOOKMARKS,
+                        PodDBAdapter.KEY_FEED+" = ? AND "+PodDBAdapter.KEY_FEEDITEM + " = ? AND " + PodDBAdapter.KEY_POSITION + " = ?",
+                        new String[]{String.valueOf(feedId),String.valueOf(feedItemId), String.valueOf(position)});
+            }
     }
 
     /**

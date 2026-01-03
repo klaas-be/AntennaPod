@@ -27,4 +27,8 @@ public class BookmarkManager {
     public List<Bookmark> getBookmarks(long feedId, long feedItemId) {
         return repository.getBookmarksForEpisode(feedId, feedItemId);
     }
+
+    public void deleteBookmark(Bookmark bookmark) {
+        repository.deleteBookmark(bookmark);
+    }
 }

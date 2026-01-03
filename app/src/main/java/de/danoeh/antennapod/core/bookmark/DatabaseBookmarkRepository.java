@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.core.bookmark;
 
-import android.database.sqlite.SQLiteDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,14 +37,7 @@ public class DatabaseBookmarkRepository implements BookmarkRepository {
     public void deleteBookmark(Bookmark bookmark) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         if (adapter != null) {
-
-            //TODO implement bookmark deletion
-//            SQLiteDatabase db = adapter.getDatabase();
-//            if (db != null && db.isOpen()) {
-//                db.delete(PodDBAdapter.TABLE_NAME_BOOKMARKS,
-//                        PodDBAdapter.KEY_FEEDITEM + " = ? AND " + PodDBAdapter.KEY_POSITION + " = ?",
-//                        new String[]{String.valueOf(bookmark.getFeedItem()), String.valueOf(bookmark.getPosition())});
-//            }
+            adapter.deleteBookmark(bookmark.getFeed(), bookmark.getFeedItem(), bookmark.getPosition()) ;
         }
     }
 }
