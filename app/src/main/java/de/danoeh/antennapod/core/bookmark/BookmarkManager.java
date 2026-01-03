@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.bookmark;
 
-import de.danoeh.antennapod.model.feed.Bookmark;
 import java.util.List;
 
 public class BookmarkManager {
@@ -9,7 +8,7 @@ public class BookmarkManager {
 
     private BookmarkManager() {
         // LATER: Change this to new DatabaseBookmarkRepository()
-        this.repository = new de.danoeh.antennapod.core.bookmark.InMemoryBookmarkRepository();
+        this.repository = new de.danoeh.antennapod.core.bookmark.DatabaseBookmarkRepository();
     }
 
     public static synchronized BookmarkManager getInstance() {
@@ -19,13 +18,13 @@ public class BookmarkManager {
         return instance;
     }
 
-    public void addBookmark(long feedItemId, long position) {
+    public void addBookmark(long feedId, long feedItemId, long position) {
         // We can add validation logic here (e.g. don't add duplicate timestamps)
-        Bookmark newBookmark = new Bookmark(feedItemId, position, "Bookmark");
+        Bookmark newBookmark = new Bookmark(feedId, feedItemId, position, "Bookmark");
         repository.addBookmark(newBookmark);
     }
 
-    public List<Bookmark> getBookmarks(long feedItemId) {
-        return repository.getBookmarksForEpisode(feedItemId);
+    public List<Bookmark> getBookmarks(long feedId, long feedItemId) {
+        return repository.getBookmarksForEpisode(feedId, feedItemId);
     }
 }

@@ -25,7 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.danoeh.antennapod.core.bookmark.BookmarkManager;
-import de.danoeh.antennapod.model.feed.Bookmark;
+import de.danoeh.antennapod.core.bookmark.Bookmark;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
@@ -227,7 +227,7 @@ public class AudioPlayerFragment extends Fragment implements
 
                     if (feedItem != null) {
                         // 2. Call the Manager
-                        BookmarkManager.getInstance().addBookmark(feedItem.getId(), currentPosition);
+                        BookmarkManager.getInstance().addBookmark(feedItem.getFeedId(), feedItem.getId(), currentPosition);
 
                         android.widget.Toast.makeText(getContext(),
                                 "Bookmark added at " + Converter.getDurationStringLong(currentPosition),
@@ -610,7 +610,7 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     private void showBookmarksDialog(FeedItem feedItem) {
-        List<Bookmark> bookmarks = BookmarkManager.getInstance().getBookmarks(feedItem.getId());
+        List<Bookmark> bookmarks = BookmarkManager.getInstance().getBookmarks(feedItem.getFeedId(), feedItem.getId());
         if (bookmarks.isEmpty()) {
             android.widget.Toast.makeText(getContext(), "No bookmarks added", android.widget.Toast.LENGTH_SHORT).show();
             return;

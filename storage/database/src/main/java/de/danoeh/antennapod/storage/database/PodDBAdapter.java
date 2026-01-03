@@ -54,7 +54,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
-    public static final int VERSION = 3110000;
+    public static final int VERSION = 3110001;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -137,6 +137,7 @@ public class PodDBAdapter {
     public static final String TABLE_NAME_QUEUE = "Queue";
     public static final String TABLE_NAME_SIMPLECHAPTERS = "SimpleChapters";
     public static final String TABLE_NAME_FAVORITES = "Favorites";
+    public static final String TABLE_NAME_BOOKMARKS = "Bookmarks";
 
     // SQL Statements for creating new tables
     private static final String TABLE_PRIMARY_KEY = KEY_ID
@@ -221,6 +222,10 @@ public class PodDBAdapter {
             + " TEXT," + KEY_START + " INTEGER," + KEY_FEEDITEM + " INTEGER,"
             + KEY_LINK + " TEXT," + KEY_IMAGE_URL + " TEXT)";
 
+    public static final String CREATE_TABLE_BOOKMARKS = "CREATE TABLE "
+            + TABLE_NAME_BOOKMARKS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
+            + " TEXT," + KEY_POSITION + " INTEGER," + KEY_FEEDITEM + " INTEGER, "+ KEY_FEED+")";
+
     // SQL Statements for creating indexes
     static final String CREATE_INDEX_FEEDITEMS_FEED = "CREATE INDEX "
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_FEED + " ON " + TABLE_NAME_FEED_ITEMS + " ("
@@ -260,7 +265,8 @@ public class PodDBAdapter {
             TABLE_NAME_DOWNLOAD_LOG,
             TABLE_NAME_QUEUE,
             TABLE_NAME_SIMPLECHAPTERS,
-            TABLE_NAME_FAVORITES
+            TABLE_NAME_FAVORITES,
+            TABLE_NAME_BOOKMARKS
     };
 
     public static final String SELECT_KEY_ITEM_ID = "item_id";
@@ -1498,6 +1504,38 @@ public class PodDBAdapter {
         db.insert(table, null, values);
     }
 
+    public void addBookmark(long feedId, long feedItemId, long position, String bookmarkTitle) {
+
+        if (db != null && db.isOpen()) {
+            ContentValues values = new ContentValues();
+            values.put(PodDBAdapter.KEY_FEEDITEM, feedItemId);
+            values.put(PodDBAdapter.KEY_FEED, feedId);
+            values.put(PodDBAdapter.KEY_POSITION, position );
+            values.put(PodDBAdapter.KEY_TITLE, bookmarkTitle);
+            db.insert(PodDBAdapter.TABLE_NAME_BOOKMARKS, null, values);
+        }
+    }
+
+    public Map<Long, String> getBookmarkForEpisode(long feedId, long feedItemId) {
+
+        Map<Long, String> bookmarks = new HashMap<>();
+
+        if (db != null && db.isOpen()) {
+            Cursor cursor = db.query(PodDBAdapter.TABLE_NAME_BOOKMARKS, null,
+                    PodDBAdapter.KEY_FEEDITEM + " = ?", new String[]{String.valueOf(feedItemId)},
+                    null, null, PodDBAdapter.KEY_POSITION + " ASC");
+            if (cursor.moveToFirst()) {
+                do {
+                    long position = cursor.getLong(cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_POSITION));
+                    String title = cursor.getString(cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_TITLE));
+                    bookmarks.put(position, title);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+    }
+        return bookmarks;
+    }
+
     /**
      * Called when a database corruption happens.
      */
@@ -1551,6 +1589,7 @@ public class PodDBAdapter {
             db.execSQL(CREATE_INDEX_FEEDMEDIA_FEEDITEM);
             db.execSQL(CREATE_INDEX_QUEUE_FEEDITEM);
             db.execSQL(CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
+            db.execSQL(CREATE_TABLE_BOOKMARKS);
         }
 
         @Override
