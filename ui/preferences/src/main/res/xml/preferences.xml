@@ -45,6 +45,10 @@
             android:key="notifications"
             android:title="@string/notification_pref_fragment"
             android:icon="@drawable/ic_notifications"/>
+    <Preference
+            android:key="prefBookmarks"
+            android:title="@string/bookmarks_label"
+            android:icon="@drawable/ic_bookmark"/>
 
     <PreferenceCategory
             android:key="project"

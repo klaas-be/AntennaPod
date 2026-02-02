@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.bookmark;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.danoeh.antennapod.model.Bookmarks.Bookmark;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 
 public class DatabaseBookmarkRepository implements BookmarkRepository {
@@ -31,6 +32,15 @@ public class DatabaseBookmarkRepository implements BookmarkRepository {
 
         }
         return bookmarks;
+    }
+
+    @Override
+    public List<Bookmark> getAllBookmarks() {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        if (adapter != null) {
+            return adapter.getAllBookmarks();
+        }
+        return new ArrayList<>();
     }
 
     @Override

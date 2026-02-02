@@ -23,6 +23,8 @@
     <string name="inbox_label_short">Inbox</string>
     <string name="favorite_episodes_label">Favorites</string>
     <string name="settings_label">Settings</string>
+    <string name="bookmarks_label">Bookmarks</string>
+    <string name="no_bookmarks_label">You have no bookmarks.</string>
     <string name="downloads_label">Downloads</string>
     <string name="downloads_label_short">Downloads</string>
     <string name="downloads_log_label">Download log</string>

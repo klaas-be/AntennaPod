@@ -25,7 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.danoeh.antennapod.core.bookmark.BookmarkManager;
-import de.danoeh.antennapod.core.bookmark.Bookmark;
+import de.danoeh.antennapod.model.Bookmarks.Bookmark;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;

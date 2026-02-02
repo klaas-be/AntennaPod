@@ -2,6 +2,8 @@ package de.danoeh.antennapod.core.bookmark;
 
 import java.util.List;
 
+import de.danoeh.antennapod.model.Bookmarks.Bookmark;
+
 public class BookmarkManager {
     private static BookmarkManager instance;
     private final BookmarkRepository repository;
@@ -26,6 +28,10 @@ public class BookmarkManager {
 
     public List<Bookmark> getBookmarks(long feedId, long feedItemId) {
         return repository.getBookmarksForEpisode(feedId, feedItemId);
+    }
+
+    public List<Bookmark> getAllBookmarks() {
+        return repository.getAllBookmarks();
     }
 
     public void deleteBookmark(Bookmark bookmark) {

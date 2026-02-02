@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.bookmark;
+package de.danoeh.antennapod.model.Bookmarks;
 
 public class Bookmark {
     private final long feedItemId;

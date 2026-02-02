@@ -14,6 +14,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.preferences.screen.about.AboutFragment;
+import de.danoeh.antennapod.ui.screen.BookmarksFragment;
 import de.danoeh.antennapod.ui.preferences.screen.bugreport.BugReportFragment;
 
 public class MainPreferencesFragment extends AnimatedPreferenceFragment {
@@ -29,6 +30,7 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREF_CATEGORY_PROJECT = "project";
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_NOTIFICATION = "notifications";
+    private static final String PREF_BOOKMARKS = "prefBookmarks";
     private static final String PREF_CONTRIBUTE = "prefContribute";
 
     @Override
@@ -93,6 +95,12 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
         });
         findPreference(PREF_NOTIFICATION).setOnPreferenceClickListener(preference -> {
             ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_notifications);
+            return true;
+        });
+        findPreference(PREF_BOOKMARKS).setOnPreferenceClickListener(preference -> {
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.settingsContainer, new BookmarksFragment())
+                    .addToBackStack(getString(R.string.bookmarks_label)).commit();
             return true;
         });
         findPreference(PREF_ABOUT).setOnPreferenceClickListener(

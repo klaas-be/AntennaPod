@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import de.danoeh.antennapod.model.Bookmarks.Bookmark;
+
 public class InMemoryBookmarkRepository implements BookmarkRepository {
     private final List<Bookmark> bookmarks = new ArrayList<>();
 
@@ -24,6 +26,11 @@ public class InMemoryBookmarkRepository implements BookmarkRepository {
         return bookmarks.stream()
                 .filter(b -> b.getFeedItem() == feedItemId)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Bookmark> getAllBookmarks() {
+        return new ArrayList<>(bookmarks);
     }
 
     @Override

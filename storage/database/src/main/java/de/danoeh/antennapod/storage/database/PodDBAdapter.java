@@ -19,12 +19,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
+import de.danoeh.antennapod.model.Bookmarks.Bookmark;
 import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.feed.FeedFunding;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.EventListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -1533,6 +1536,25 @@ public class PodDBAdapter {
             }
             cursor.close();
     }
+        return bookmarks;
+    }
+
+    public List<Bookmark> getAllBookmarks() {
+        List<Bookmark> bookmarks = new ArrayList<>();
+        if (db != null && db.isOpen()) {
+            Cursor cursor = db.query(PodDBAdapter.TABLE_NAME_BOOKMARKS, null,
+                    null, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    long feedId = cursor.getLong(cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED));
+                    long feedItemId = cursor.getLong(cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEEDITEM));
+                    long position = cursor.getLong(cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_POSITION));
+                    String title = cursor.getString(cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_TITLE));
+                    bookmarks.add(new Bookmark(feedId, feedItemId, position, title));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
         return bookmarks;
     }
 
